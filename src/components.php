@@ -1,6 +1,7 @@
 <?php
 
 use Snowdog\DevTest\Command\MigrateCommand;
+use Snowdog\DevTest\Command\SitemapCommand;
 use Snowdog\DevTest\Command\WarmCommand;
 use Snowdog\DevTest\Component\CommandRepository;
 use Snowdog\DevTest\Component\Menu;
@@ -16,10 +17,13 @@ use Snowdog\DevTest\Controller\LoginFormAction;
 use Snowdog\DevTest\Controller\LogoutAction;
 use Snowdog\DevTest\Controller\RegisterAction;
 use Snowdog\DevTest\Controller\RegisterFormAction;
+use Snowdog\DevTest\Controller\SitemapUploadAction;
+use Snowdog\DevTest\Controller\SitemapUploaderFormAction;
 use Snowdog\DevTest\Controller\VarnishesAction;
 use Snowdog\DevTest\Controller\WebsiteAction;
 use Snowdog\DevTest\Menu\LoginMenu;
 use Snowdog\DevTest\Menu\RegisterMenu;
+use Snowdog\DevTest\Menu\SitemapMenu;
 use Snowdog\DevTest\Menu\VarnishesMenu;
 use Snowdog\DevTest\Menu\WebsitesMenu;
 
@@ -36,13 +40,17 @@ RouteRepository::registerRoute('GET', '/varnishes', VarnishesAction::class, 'exe
 RouteRepository::registerRoute('POST', '/varnish', CreateVarnishAction::class, 'execute');
 RouteRepository::registerRoute('POST', '/varnishlink', CreateVarnishLinkAction::class, 'execute');
 RouteRepository::registerRoute('POST', '/varnishunlink', CreateVarnishLinkAction::class, 'executeUnlink');
+RouteRepository::registerRoute('GET', '/sitemap-upload', SitemapUploaderFormAction::class, 'execute');
+RouteRepository::registerRoute('POST', '/sitemap-upload', SitemapUploadAction::class, 'execute');
 
 CommandRepository::registerCommand('migrate_db', MigrateCommand::class);
 CommandRepository::registerCommand('warm [id]', WarmCommand::class);
+CommandRepository::registerCommand('sitemap [file] [userLogin]', SitemapCommand::class);
 
 Menu::register(LoginMenu::class, 200);
 Menu::register(RegisterMenu::class, 250);
 Menu::register(WebsitesMenu::class, 10);
 Menu::register(VarnishesMenu::class, 20);
+Menu::register(SitemapMenu::class, 30);
 
 Migrations::registerComponentMigration('Snowdog\\DevTest', 3);

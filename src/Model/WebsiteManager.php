@@ -37,6 +37,15 @@ class WebsiteManager
         return $query->fetchAll(\PDO::FETCH_CLASS, Website::class);
     }
 
+    public function getIdByHostname($hostname)
+    {
+        /** @var \PDOStatement $query */
+        $query = $this->database->prepare('SELECT `website_id` FROM `websites` WHERE `hostname` = :hostname');
+        $query->bindParam(':hostname', $hostname, \PDO::PARAM_STR);
+        $query->execute();
+        return $query->fetch();
+    }
+
     public function create(User $user, $name, $hostname)
     {
         $userId = $user->getUserId();

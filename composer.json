@@ -3,7 +3,8 @@
   "require": {
     "mnapoli/silly": "^1.3",
     "nikic/fast-route": "^1.0",
-    "php-di/php-di": "^5.3"
+    "php-di/php-di": "^5.3",
+    "gatesoftware/sitemap-importer": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -15,5 +16,11 @@
     "files": [
       "src/components.php"
     ]
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/Chinet1/sitemap-importer.git"
+    }
+  ]
 }
