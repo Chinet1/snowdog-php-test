@@ -7,9 +7,25 @@ interface Old_Legacy_CacheWarmer_Resolver_Interface
 
 class Old_Legacy_CacheWarmer_Resolver_Method implements Old_Legacy_CacheWarmer_Resolver_Interface 
 {
+    public $website_id;
+
+    public function __construct($website_id)
+    {
+        $this->website_id = $website_id;
+    }
+
     public function getIp($hostname)
     {
         return gethostbyname($hostname);
+        $db = new Snowdog\DevTest\Core\Database();
+        $varnishManager = new Snowdog\DevTest\Model\VarnishManager($db);
+        $websiteManager = new Snowdog\DevTest\Model\WebsiteManager($db);
+        $website = $websiteManager->getById($this->website_id);
+        if ($varnish = $varnishManager->getByWebsite($website)) {
+            return $varnish->getIp();
+        } else {
+            return gethostbyname($hostname);
+        }
     }
 }
 

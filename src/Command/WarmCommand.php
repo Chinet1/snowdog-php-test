@@ -29,7 +29,7 @@ class WarmCommand
         if ($website) {
             $pages = $this->pageManager->getAllByWebsite($website);
 
-            $resolver = new \Old_Legacy_CacheWarmer_Resolver_Method();
+            $resolver = new \Old_Legacy_CacheWarmer_Resolver_Method($website->getWebsiteId());
             $actor = new \Old_Legacy_CacheWarmer_Actor();
             $actor->setActor(function ($hostname, $ip, $url) use ($output) {
                 $output->writeln('Visited <info>http://' . $hostname . '/' . $url . '</info> via IP: <comment>' . $ip . '</comment>');
