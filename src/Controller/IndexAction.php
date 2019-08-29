@@ -2,13 +2,13 @@
 
 namespace Snowdog\DevTest\Controller;
 
+use Snowdog\DevTest\Model\PageManager;
 use Snowdog\DevTest\Model\User;
 use Snowdog\DevTest\Model\UserManager;
 use Snowdog\DevTest\Model\WebsiteManager;
 
 class IndexAction
 {
-
     /**
      * @var WebsiteManager
      */
@@ -19,11 +19,29 @@ class IndexAction
      */
     private $user;
 
-    public function __construct(UserManager $userManager, WebsiteManager $websiteManager)
+    /**
+     * @var int
+     */
+    private $pagesTotal;
+
+    /**
+     * @var string
+     */
+    private $leastRecentlyVisitedPage;
+
+    /**
+     * @var string
+     */
+    private $mostRecentlyVisitedPage;
+
+    public function __construct(UserManager $userManager, WebsiteManager $websiteManager, PageManager $pageManager)
     {
         $this->websiteManager = $websiteManager;
         if (isset($_SESSION['login'])) {
             $this->user = $userManager->getByLogin($_SESSION['login']);
+            $this->pagesTotal = $pageManager->getPagesTotalNumber();
+            $this->leastRecentlyVisitedPage = $pageManager->getLeastRecentlyVisitedPage();
+            $this->mostRecentlyVisitedPage = $pageManager->getMostRecentlyVisitedPage();
         }
     }
 
