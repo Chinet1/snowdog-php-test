@@ -3,6 +3,7 @@
 namespace Snowdog\DevTest\Component;
 
 use FastRoute\RouteCollector;
+use Snowdog\DevTest\Controller\ForbiddenAction;
 
 class RouteRepository
 {
@@ -12,6 +13,8 @@ class RouteRepository
     const ROUTE = 'route';
     const CLASS_NAME = 'class_name';
     const METHOD_NAME = 'method_name';
+    const ACCESS_TYPE_GUEST = 'guest';
+    const ACCESS_TYPE_LOGGED = 'logged';
 
 
     /**
@@ -25,9 +28,24 @@ class RouteRepository
         return self::$instance;
     }
 
-    public static function registerRoute($httpMethod, $route, $className, $methodName)
+    public static function registerRoute($httpMethod, $route, $className, $methodName, $accessType)
     {
         $instance = self::getInstance();
+        switch ($accessType) {
+            case self::ACCESS_TYPE_GUEST:
+                if (isset($_SESSION['login'])) {
+                    $className = ForbiddenAction::class;
+                    $methodName = 'execute';
+                }
+                break;
+            case self::ACCESS_TYPE_LOGGED:
+                if (!isset($_SESSION['login'])) {
+                    $className = ForbiddenAction::class;
+                    $methodName = 'execute';
+                }
+                break;
+        }
+
         $instance->addRoute($httpMethod, $route, $className, $methodName);
     }
 

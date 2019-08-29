@@ -55,6 +55,10 @@ class IndexAction
 
     public function execute()
     {
+        if (!$this->user) {
+            header('Location: /login');
+            return;
+        }
         require __DIR__ . '/../view/index.phtml';
     }
 }

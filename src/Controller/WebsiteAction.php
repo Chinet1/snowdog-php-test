@@ -43,6 +43,9 @@ class WebsiteAction
 
             if ($website->getUserId() == $user->getUserId()) {
                 $this->website = $website;
+            } else {
+                require __DIR__ . '/../view/403.phtml';
+                exit;
             }
         }
 
