@@ -60,7 +60,7 @@ class Old_Legacy_CacheWarmer_Warmer
             $website_id->fetch()['website_id'] . '"');
         $date = date('Y-m-d H:i:s');
         $update = $db->prepare('UPDATE `pages` SET `last_visited` = ? WHERE `page_id` = ?');
-        $update->execute(array($date, $page_id->fetch()['page_id']));
+        $update->execute(array($date, $page_id->fetchColumn(0)));
     }
 
     /**
